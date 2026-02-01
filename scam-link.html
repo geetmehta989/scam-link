@@ -109,12 +109,14 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             position: absolute;
             pointer-events: none;
-            opacity: 0.6;
+            opacity: 0.7;
             font-size: 16px;
             padding: 14px 30px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: default;
             z-index: 10;
+            display: block;
+            visibility: visible;
         }
 
         .celebration {
@@ -333,28 +335,34 @@
 
         // Initialize NO button position - start it next to YES button
         function initializeNoButton() {
-            const yesBtnRect = yesBtn.getBoundingClientRect();
             const cardRect = card.getBoundingClientRect();
             const buttonContainer = document.querySelector('.button-container');
             const containerRect = buttonContainer.getBoundingClientRect();
             
             // Position NO button to the right of YES button initially
+            // Calculate position relative to card
             const leftPos = containerRect.left - cardRect.left + containerRect.width + 20;
             const topPos = containerRect.top - cardRect.top;
             
+            // Ensure button is visible
+            noBtn.style.display = 'block';
+            noBtn.style.visibility = 'visible';
             noBtn.style.left = leftPos + 'px';
             noBtn.style.top = topPos + 'px';
         }
         
+        // Initialize immediately
+        initializeNoButton();
+        
         // Initialize on page load
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initializeNoButton);
-        } else {
-            initializeNoButton();
         }
         
-        // Also initialize after a short delay to ensure layout is complete
-        setTimeout(initializeNoButton, 100);
+        // Also initialize after delays to ensure layout is complete
+        setTimeout(initializeNoButton, 50);
+        setTimeout(initializeNoButton, 200);
+        setTimeout(initializeNoButton, 500);
         window.addEventListener('resize', initializeNoButton);
     </script>
 </body>
