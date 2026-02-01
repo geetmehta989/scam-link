@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will you be my Valentine?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffd6e8 50%, #ffc0d9 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 50px 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.2);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kitten-emoji {
+            font-size: 60px;
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-10px) scale(1.05);
+            }
+        }
+
+        .main-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 42px;
+            font-weight: 700;
+            color: #d63384;
+            margin-bottom: 40px;
+            line-height: 1.2;
+            transition: all 0.5s ease;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+            position: relative;
+        }
+
+        .btn {
+            padding: 18px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #ff6b9d 0%, #ffc0d9 100%);
+            color: white;
+            box-shadow: 0 8px 20px rgba(255, 107, 157, 0.3);
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .btn-yes:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(255, 107, 157, 0.4);
+        }
+
+        .btn-yes:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        .btn-no {
+            background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+            color: #999;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.6;
+            font-size: 16px;
+            padding: 14px 30px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: default;
+            z-index: 10;
+        }
+
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 30px;
+            animation: float 3s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes float {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) rotate(360deg);
+            }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff6b9d;
+            animation: confetti-fall 2s ease-out forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 40px 30px;
+            }
+
+            .main-text {
+                font-size: 36px;
+            }
+
+            .kitten-emoji {
+                font-size: 50px;
+            }
+
+            .btn {
+                padding: 16px 35px;
+                font-size: 16px;
+            }
+
+            .button-container {
+                flex-direction: column;
+            }
+
+            .btn-yes {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="card">
+        <div class="kitten-emoji">🐱❤️</div>
+        <div class="main-text" id="mainText">Will you be my Valentine?</div>
+        <div class="button-container">
+            <button class="btn btn-yes" id="yesBtn">YES</button>
+        </div>
+        <button class="btn btn-no" id="noBtn">NO</button>
+    </div>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const mainText = document.getElementById('mainText');
+        const card = document.getElementById('card');
+
+        let celebrationStarted = false;
+
+        // Make NO button dodge the cursor - track mouse movement on the card
+        let lastMoveTime = 0;
+        const moveDelay = 150; // Throttle movement to avoid jittery behavior
+
+        // Position NO button relative to card for movement
+        noBtn.style.position = 'absolute';
+        
+        card.addEventListener('mousemove', function(e) {
+            const now = Date.now();
+            if (now - lastMoveTime < moveDelay) return;
+            lastMoveTime = now;
+
+            const buttonRect = noBtn.getBoundingClientRect();
+            const cardRect = card.getBoundingClientRect();
+            
+            // Calculate distance from cursor to button center
+            const buttonCenterX = buttonRect.left + buttonRect.width / 2;
+            const buttonCenterY = buttonRect.top + buttonRect.height / 2;
+            const distance = Math.sqrt(
+                Math.pow(e.clientX - buttonCenterX, 2) +
+                Math.pow(e.clientY - buttonCenterY, 2)
+            );
+            
+            // If cursor is within 120px of button, move it away
+            if (distance < 120) {
+                const cardPadding = 20;
+                const maxX = cardRect.width - buttonRect.width - cardPadding;
+                const maxY = cardRect.height - buttonRect.height - cardPadding;
+                
+                // Calculate cursor position relative to card
+                const relativeX = e.clientX - cardRect.left;
+                const relativeY = e.clientY - cardRect.top;
+                
+                // Try to find a position far from cursor
+                let newX, newY;
+                let attempts = 0;
+                do {
+                    newX = Math.random() * maxX;
+                    newY = Math.random() * maxY;
+                    const newDistance = Math.sqrt(
+                        Math.pow(relativeX - (newX + buttonRect.width / 2), 2) +
+                        Math.pow(relativeY - (newY + buttonRect.height / 2), 2)
+                    );
+                    if (newDistance > 150 || attempts > 15) break;
+                    attempts++;
+                } while (attempts < 20);
+                
+                // Position relative to card
+                noBtn.style.left = newX + 'px';
+                noBtn.style.top = newY + 'px';
+            }
+        });
+
+        // Prevent clicking on NO button
+        noBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        });
+
+        noBtn.addEventListener('mousedown', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        });
+
+        // YES button click handler
+        yesBtn.addEventListener('click', function() {
+            if (celebrationStarted) return;
+            celebrationStarted = true;
+            
+            // Change text
+            mainText.textContent = "I knew you'd say yes 💖🐱";
+            mainText.style.transform = 'scale(1.1)';
+            
+            // Hide buttons
+            yesBtn.style.display = 'none';
+            noBtn.style.display = 'none';
+            
+            // Create celebration animation
+            createCelebration();
+        });
+
+        function createCelebration() {
+            const celebration = document.createElement('div');
+            celebration.className = 'celebration';
+            document.body.appendChild(celebration);
+
+            // Create floating hearts
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart';
+                    heart.textContent = ['💖', '💕', '💗', '💓', '💝'][Math.floor(Math.random() * 5)];
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.animationDelay = Math.random() * 0.5 + 's';
+                    celebration.appendChild(heart);
+                    
+                    setTimeout(() => heart.remove(), 3000);
+                }, i * 100);
+            }
+
+            // Create confetti
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.backgroundColor = ['#ff6b9d', '#ffc0d9', '#ff9ec5', '#ffb3d1'][Math.floor(Math.random() * 4)];
+                    confetti.style.animationDelay = Math.random() * 0.3 + 's';
+                    celebration.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 2000);
+                }, i * 50);
+            }
+
+            // Remove celebration container after animation
+            setTimeout(() => {
+                celebration.remove();
+            }, 4000);
+        }
+
+        // Initialize NO button position - start it next to YES button
+        setTimeout(() => {
+            const yesBtnRect = yesBtn.getBoundingClientRect();
+            const cardRect = card.getBoundingClientRect();
+            const buttonContainer = document.querySelector('.button-container');
+            const containerRect = buttonContainer.getBoundingClientRect();
+            
+            // Position NO button to the right of YES button initially
+            noBtn.style.left = (containerRect.left - cardRect.left + containerRect.width + 20) + 'px';
+            noBtn.style.top = (containerRect.top - cardRect.top) + 'px';
+        }, 10);
+    </script>
+</body>
+</html>
