@@ -1,0 +1,8 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/*"
+  to = "/scam-link.html"
+  status = 200
+
