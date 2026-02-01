@@ -1,0 +1,36 @@
+===========================================
+  HOW TO ADD YOUR IMAGES
+===========================================
+
+The page is set up to use these images:
+
+1. PROFILE IMAGE (Selfie photo):
+   - File name: profile-image.jpg
+   - Location: Same folder as scam-link.html
+   - OR: Update the src in HTML to your image URL/path
+   - This appears at the top where "Shreya will you be my Valentine?" is
+
+2. DOG GIF (Celebration):
+   - File name: dog-gif.gif
+   - Location: Same folder as scam-link.html
+   - OR: Update the src in HTML to your GIF URL/path
+   - This appears when "YES" is clicked
+
+OPTIONS:
+--------
+Option 1: Add images to the same folder
+- Place profile-image.jpg and dog-gif.gif in the same folder as scam-link.html
+- The page will automatically load them
+
+Option 2: Use image URLs
+- Edit scam-link.html
+- Find: <img src="profile-image.jpg"
+- Replace with: <img src="YOUR_IMAGE_URL"
+- Do the same for dog-gif.gif
+
+Option 3: Use different file names
+- Edit scam-link.html
+- Change the src attributes to match your file names
+
+===========================================
+

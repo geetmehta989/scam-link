@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Will you be my Valentine?</title>
+    <title>Shreya will you be my Valentine?</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -42,6 +42,45 @@
             margin-bottom: 20px;
             display: inline-block;
             animation: bounce 2s ease-in-out infinite;
+        }
+
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #ff6b9d;
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.3);
+            margin-bottom: 20px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .celebration-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .celebration-gif {
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+            object-fit: cover;
+            margin: 10px 0;
+        }
+
+        .celebration-hearts {
+            font-size: 40px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .celebration-hearts span {
+            animation: bounce 1s ease-in-out infinite;
+            animation-delay: calc(var(--i) * 0.1s);
         }
 
         @keyframes bounce {
@@ -104,12 +143,12 @@
         }
 
         .btn-no {
-            background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
-            color: #999;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, #666 0%, #888 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             position: absolute;
             pointer-events: none;
-            opacity: 0.7;
+            opacity: 0.9;
             font-size: 16px;
             padding: 14px 30px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -117,6 +156,7 @@
             z-index: 10;
             display: block;
             visibility: visible;
+            font-weight: 600;
         }
 
         .celebration {
@@ -196,8 +236,8 @@
 </head>
 <body>
     <div class="container" id="card">
-        <div class="kitten-emoji">🐱❤️</div>
-        <div class="main-text" id="mainText">Will you be my Valentine?</div>
+        <img src="profile-image.jpg" alt="Profile" class="profile-image" id="profileImage" onerror="this.style.display='none'">
+        <div class="main-text" id="mainText">Shreya will you be my Valentine?</div>
         <div class="button-container">
             <button class="btn btn-yes" id="yesBtn">YES</button>
         </div>
@@ -282,8 +322,24 @@
             if (celebrationStarted) return;
             celebrationStarted = true;
             
-            // Change text
-            mainText.textContent = "I knew you'd say yes 💖🐱";
+            // Change text with hearts and GIF
+            const celebrationDiv = document.createElement('div');
+            celebrationDiv.className = 'celebration-content';
+            celebrationDiv.innerHTML = `
+                <div class="main-text" style="font-size: 42px; color: #d63384; margin-bottom: 20px;">
+                    I knew you'd say yes
+                </div>
+                <div class="celebration-hearts">
+                    <span style="--i: 0">💖</span>
+                    <span style="--i: 1">💕</span>
+                    <span style="--i: 2">💗</span>
+                    <span style="--i: 3">💓</span>
+                </div>
+                <img src="dog-gif.gif" alt="Celebration" class="celebration-gif" onerror="this.style.display='none'">
+            `;
+            
+            mainText.innerHTML = '';
+            mainText.appendChild(celebrationDiv);
             mainText.style.transform = 'scale(1.1)';
             
             // Hide buttons
@@ -333,16 +389,21 @@
             }, 4000);
         }
 
-        // Initialize NO button position - start it next to YES button
+        // Initialize NO button position - center it initially
         function initializeNoButton() {
             const cardRect = card.getBoundingClientRect();
             const buttonContainer = document.querySelector('.button-container');
             const containerRect = buttonContainer.getBoundingClientRect();
             
-            // Position NO button to the right of YES button initially
-            // Calculate position relative to card
-            const leftPos = containerRect.left - cardRect.left + containerRect.width + 20;
-            const topPos = containerRect.top - cardRect.top;
+            // Center NO button initially
+            const cardWidth = cardRect.width;
+            const cardHeight = cardRect.height;
+            const buttonWidth = 120; // Approximate button width
+            const buttonHeight = 50; // Approximate button height
+            
+            // Center horizontally and vertically in the card
+            const leftPos = (cardWidth - buttonWidth) / 2;
+            const topPos = containerRect.top - cardRect.top + (containerRect.height / 2) - (buttonHeight / 2);
             
             // Ensure button is visible
             noBtn.style.display = 'block';

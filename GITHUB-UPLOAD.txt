@@ -1,0 +1,36 @@
+===========================================
+  UPLOAD TO GITHUB - QUICK GUIDE
+===========================================
+
+STEP 1: Create GitHub Repository
+----------------------------------
+1. Go to: https://github.com/new
+2. Repository name: scam-link
+3. Make it: Public
+4. DO NOT check "Add a README file"
+5. Click "Create repository"
+
+STEP 2: Upload Your Code
+-------------------------
+Open PowerShell in this folder and run:
+
+git remote add origin https://github.com/YOUR_USERNAME/scam-link.git
+git branch -M main
+git push -u origin main
+
+(Replace YOUR_USERNAME with your actual GitHub username)
+
+STEP 3: Enable GitHub Pages (Optional)
+---------------------------------------
+1. Go to: https://github.com/YOUR_USERNAME/scam-link/settings/pages
+2. Source: Deploy from a branch
+3. Branch: main, Folder: / (root)
+4. Click Save
+
+Your site will be live at:
+https://YOUR_USERNAME.github.io/scam-link/scam-link.html
+
+===========================================
+All files are already committed and ready!
+===========================================
+
